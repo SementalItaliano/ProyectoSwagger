@@ -78,6 +78,10 @@ router.get('/:id', async (req, res) => {
  *         application/json:
  *           schema:
  *             $ref: "#/components/schemas/Departamento"
+ *           example:
+ *             name: "Finanzas"
+ *             area: "660c8e5b9f8a95e8fddbfcc1"
+ *             encargado: "660c8e6a9f8a95e8fddbfcc5"
  *     responses:
  *       201:
  *         description: Departamento creado exitosamente
@@ -96,14 +100,13 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const nuevoDepartamento = new Departamento({name,area,encargado,});
+        const nuevoDepartamento = new Departamento({ name, area, encargado });
         const departamentoGuardado = await nuevoDepartamento.save();
         res.status(201).json(departamentoGuardado);
     } catch (err) {
         res.status(500).json({ message: `Error al crear el departamento: ${err.message}` });
     }
 });
-
 
 /**
  * @swagger
@@ -124,6 +127,10 @@ router.post('/', async (req, res) => {
  *         application/json:
  *           schema:
  *             $ref: "#/components/schemas/Departamento"
+ *           example:
+ *             name: "Recursos Humanos"
+ *             area: "660c8e5b9f8a95e8fddbfcc2"
+ *             encargado: "660c8e6a9f8a95e8fddbfcc6"
  *     responses:
  *       200:
  *         description: Departamento actualizado

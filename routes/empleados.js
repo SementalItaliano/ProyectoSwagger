@@ -7,7 +7,8 @@ const router = express.Router();
  * @swagger
  * /api/empleados:
  *   get:
- *     description: Obtiene todos los empleados
+ *     summary: Obtiene todos los empleados
+ *     tags: [Empleados]
  *     responses:
  *       200:
  *         description: Lista de empleados
@@ -31,7 +32,8 @@ router.get('/', async (req, res) => {
  * @swagger
  * /api/empleados/{id}:
  *   get:
- *     description: Obtiene un empleado por ID
+ *     summary: Obtiene un empleado por ID
+ *     tags: [Empleados]
  *     parameters:
  *       - in: path
  *         name: id
@@ -63,32 +65,14 @@ router.get('/:id', async (req, res) => {
  * @swagger
  * /api/empleados:
  *   post:
- *     description: Crea un nuevo empleado
+ *     summary: Crea un nuevo empleado
+ *     tags: [Empleados]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - name
- *               - apellido
- *               - edad
- *               - genero
- *               - departamentos
- *             properties:
- *               name:
- *                 type: string
- *               apellido:
- *                 type: string
- *               edad:
- *                 type: number
- *               genero:
- *                 type: string
- *               departamentos:
- *                 type: array
- *                 items:
- *                   type: string
+ *             $ref: '#/components/schemas/Empleado'
  *     responses:
  *       201:
  *         description: Empleado creado
@@ -115,7 +99,8 @@ router.post('/', async (req, res) => {
  * @swagger
  * /api/empleados/{id}:
  *   put:
- *     description: Actualiza un empleado por ID
+ *     summary: Actualiza un empleado por ID
+ *     tags: [Empleados]
  *     parameters:
  *       - in: path
  *         name: id
@@ -168,7 +153,8 @@ router.put('/:id', async (req, res) => {
  * @swagger
  * /api/empleados/{id}:
  *   delete:
- *     description: Elimina un empleado por ID
+ *     summary: Elimina un empleado por ID
+ *     tags: [Empleados]
  *     parameters:
  *       - in: path
  *         name: id
