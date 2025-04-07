@@ -1,70 +1,64 @@
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+/*
+Lo primero que haremos será importar las librerías necesarias para piner Swagger en nuestro 
+proyecto
+Swagger-jsdoc nos genera un archivo de especificacione de Swagger en formato Json
+Swagger-ui-express nos proporciona la interfaz de usuario para el navegador y visualizar y probar la 
+api
+*/
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
+/*
+En esta parte se define la especificación que va a tener el Swagger
+Primero le indicamos la versión de openApi
+Le indicamos toda la informacon relevante que necesitamos que contenga como el titulo, la versión y 
+la descripcion de la Api
+Luego le pasamos la información necesaria para que la api arranque en el servidor locar con su URL
+*/
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title:'Api"s Documentacion',
+    version:'1.0.0',
+    description:'Api"s Documentacion with swagger'
+  },
+  servers:[
+    {
+      url:'http://localhost:4000',
+      description:'Develop"s server'
+    }
+  ]
+}
+/*
+En opciones se configura primero la información que acabamos de crear
+Despues le especificamos la ubicación de los archivos donde están definidas las rutas(En este caso 
+la carpeta routes) Donde Swagger leerá los comentarios de estos archivos buscando la notación 
+@swagger
+*/
+const options ={
+  swaggerDefinition,
+  apis:['./routes/*.js']
+}
 
-const swaggerOptions = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "API de Gestión de Empresa",
-            version: "1.0.0",
-            description: "Documentación de la API para gestionar empleados, departamentos, encargados y áreas.",
-        },
-        servers: [
-            {
-                url: "http://localhost:4000",
-            },
-        ],
-        components: {
-            schemas: {
-                // Esquema para el modelo Area
-                Area: {
-                    type: "object",
-                    properties: {
-                        name: { type: "string", description: "Nombre del área" },
-                        edificio: { type: "string", description: "Nombre del edificio" },
-                    },
-                    required: ["name", "edificio"]
-                },
-                // Esquema para el modelo Departamento
-                Departamento: {
-                    type: "object",
-                    properties: {
-                        name: { type: "string", description: "Nombre del departamento" },
-                        area: {type: "string", description: "ID del area del departamento"},
-                        encargado: {type: "string", description: "ID del encargado del departamento"},
-                    },
-                    required: ["name", "area", "encargado"]
-                },
-                // Esquema para el modelo Empleado
-                Empleado: {
-                    type: "object",
-                    properties: {
-                        name: { type: "string", description: "Nombre del empleado" },
-                        apellido: { type: "string", description: "Apellido del empleado" },
-                        edad: { type: "integer", description: "Edad del empleado" },
-                        genero: { type: "string", description: "Género del empleado" },
-                        departamentos: {type: "string", description: "ID de los departamentos del empelado"},
-                    },
-                    required: ["name", "apellido", "edad", "genero", "departamentos"]
-                },
-                // Esquema para el modelo Encargado
-                Encargado: {
-                    type: "object",
-                    properties: {
-                        name: { type: "string", description: "Nombre del encargado" },
-                        estudio: { type: "string", description: "Estudios del encargado" },
-                        turno: { type: "string", description: "Turno del encargado" },
-                    },
-                    required: ["name", "estudio", "turno"]
-                }
-            }
-        }
-    },
-    apis: ["./routes/*.js"], 
-};
+/*
+Genera la especificación Swagger donde swaggerJSDoc procesa las opciones 
+configuradas y nos da un Json que describe la api 
+*/
 
-const swaggerSpec = swaggerJsDoc(swaggerOptions);
+const swaggerSpect = swaggerJSDoc(options)
 
-module.exports = (app) => {
-    app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-};
+/*
+Lo primero que realiza esta función es integrar swagger en la aplicación con Express
+Se define una nueva ruta con app.use y le pasamos primero /api-docs 
+despues pasar como parámetro el swagger.UI.serve que es un middleware que entrega los archivos 
+estáticos necesarios para la interfaz
+incluimos el siguiente parámetro que genera y configura la interfaz de Swagger basada en la 
+especificación del Swagger
+*/
+
+function setupSwagger(app){
+  app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpect))
+}
+
+//Exporta únicamente la función setupSwagger del archivo para que desde el archivo app.js se pueda utilizar
+
+module.exports= setupSwagger

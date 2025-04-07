@@ -1,29 +1,37 @@
-const mongoose = require('mongoose');
+//Se importa mongoose, una biblioteca para trabajar con bases de datos de Mongo DB en Node.js
 
-const empleadoSchema = mongoose.Schema({
+const mongoose = require("mongoose")
+
+const EmpleadoSchema = mongoose.Schema({
+
     name: {
         type: String,
-        required: [true, "El nombre del empleado es obligatorio"]
+        required: true
     },
-    apellido: {
+    lastName: {
         type: String,
-        required: [true, "El apellido del empleado es obligatorio"]
+        required: true
     },
-    edad: {
+    age: {
         type: Number,
-        required: [true, "La edad es obligatoria"]
+        required: true
     },
-    genero: {
+    gender: {
         type: String,
-        required: [true, "El género es obligatorio"]
+        required: true
     },
-    departamentos: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Departamento",
-            required: true
-        }
-    ]
-}, { timestamps: true });
+    Department1: {
+        type: Object, 
+        required: true
+    },
+    Department2: {
+        type: Object, 
+        required: true
+    },
+    Department3: {
+        type: Object, 
+        required: true
+    }
+})
 
-module.exports = mongoose.model("Empleado", empleadoSchema);
+module.exports =  mongoose.model('Empleado',EmpleadoSchema)
